@@ -1,2 +1,2 @@
 env=Environment()
-env.Progarm('hello.c')
+env.Program('hello.c')
