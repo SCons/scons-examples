@@ -1,0 +1,5 @@
+env=Environment()
+
+conf=Configure(env, config_h='config.h')
+conf.Define('FUNNY_STUFF')
+conf.Finish()
