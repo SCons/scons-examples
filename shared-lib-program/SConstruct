@@ -2,9 +2,9 @@
 # as we're not using it.
 DefaultEnvironment(tools=[])
 
-env = Environment()
+env = Environment(LIBPATH=['.'])
 
-lib = env.SharedLibrary(
+env.SharedLibrary(
     target = 'a',
     source = 'lib.c')
     
