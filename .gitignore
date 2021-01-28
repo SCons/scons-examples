@@ -5,10 +5,16 @@ __pycache__/
 
 # C extensions
 *.so
+*.o
+*.os
 *.obj
 *.lib
 *.dll
 *.exe
+*.exp
+
+# SCons
+.sconsign.dblite*
 
 # Distribution / packaging
 .Python
