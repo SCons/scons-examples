@@ -1,0 +1,3 @@
+Import('env')
+
+env.Program('app','app.c',LIBS=['a'], LIBPATH=['../liba'])
