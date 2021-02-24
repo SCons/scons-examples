@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-__declspec(dllimport)
+__declspec(dllexport)
 #endif 
 int add(int a, int b);
 
