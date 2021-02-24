@@ -1,0 +1,4 @@
+Import('env')
+
+SConscript('app/SConscript', exports='env')
+SConscript('liba/SConscript', exports='env')

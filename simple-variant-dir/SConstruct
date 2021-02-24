@@ -1,0 +1,9 @@
+env=Environment()
+
+env['CPPPATH'] = ['#/src/liba']
+env['CPPDEFINES']=[('FLAVOR','vanilla')]
+
+SConscript('src/SConscript', variant_dir='build/vanilla', exports='env')
+
+choc_env = env.Clone(CPPDEFINES=[('FLAVOR','chocolate')])
+SConscript('src/SConscript', variant_dir='build/chocolate', exports={'env':choc_env})

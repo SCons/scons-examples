@@ -4,8 +4,9 @@ DefaultEnvironment(tools=[])
 
 env = Environment(LIBPATH=['.'])
 
+libname = 'xyz'
 env.SharedLibrary(
-    target = 'a',
+    target = libname,
     source = 'lib.c')
     
 # We list the library by it's base name 'a' and not a.dll, or liba.a because SCons
@@ -18,4 +19,4 @@ env.SharedLibrary(
 env.Program(
     target = 'app',
     source = 'app.c',
-    LIBS=['a',])
+    LIBS=[libname,])
