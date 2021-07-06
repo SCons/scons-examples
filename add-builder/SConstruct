@@ -1,0 +1,21 @@
+# Create a new method to generate assembly files.
+env=Environment()
+
+#1. create an extrernal command by interface 'Builder' 
+assemblybuild = Builder (
+	action = Action('$CC $ASSEMFLAG $SOURCE -o $TARGET', '$ASSEMCOMSTR'),
+	suffix = '.asm',
+	src_suffix = '.c'
+)
+
+#2. Attached the new command to environment $BUILDERS construction variable
+env.Append(BUILDERS={'Assembly': assemblybuild})
+
+#3. Add configuration parameters
+env['ASSEMFLAG'] = ['-S']
+
+#4. Controlling SCons prints when 'Assembly' command build
+env['ASSEMCOMSTR'] = "Generate Assembly...$TARGET"
+
+#5. test command
+env.Assembly(target = 'hello.asm', source = 'hello.c')
