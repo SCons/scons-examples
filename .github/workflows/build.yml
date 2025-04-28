@@ -1,0 +1,24 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        project: [cfile-to-asm-builder, shared-lib-program, simple, simple-configure]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        run: pip install scons
+
+      - name: Build project
+        working-directory: ${{ matrix.project }}
+        run: scons --debug=time,sconscript
