@@ -1,3 +1,7 @@
+# Skip initializing any tools in the DefaultEnvironment 
+# as we're not using it.
+DefaultEnvironment(tools=[])
+
 # Create a new method to generate assembly files.
 env=Environment()
 

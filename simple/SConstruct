@@ -1,2 +1,6 @@
+# Skip initializing any tools in the DefaultEnvironment 
+# as we're not using it.
+DefaultEnvironment(tools=[])
+
 env=Environment()
 env.Program('hello.c')
