@@ -6,6 +6,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+env:
+  VSCMD_SKIP_SENDTELEMETRY: 1
+  SCONS_CACHE_MSVC_CONFIG: 1
+
 jobs:
   build:
     strategy:
@@ -19,6 +23,27 @@ jobs:
       - name: Setup Python environment
         run: pip install scons
 
+      - name: set cache key for SCons MSVC Cache
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: bash
+        run: echo "SCONS_CACHE_KEY=${RUNNER_OS}-${ImageVersion}" >> $GITHUB_ENV
+
+      - id: get-scons-msvc-cache
+        name: Get SCons MSVC Cache
+        if: ${{ env.CACHE_KEY != '' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: ~\scons_msvc_cache.json
+          key: ${{ env.SCONS_CACHE_KEY }}
+          fail-on-cache-miss: false
+
       - name: Build project
         working-directory: ${{ matrix.project }}
-        run: scons --debug=time,sconscript
+        run: scons
+
+      - name: Save SCons MSVC Cache
+        if: ${{ steps.get-scons-msvc-cache.outputs.cache-hit != 'true'  }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~\scons_msvc_cache.json
+          key: ${{ env.SCONS_CACHE_KEY }}
