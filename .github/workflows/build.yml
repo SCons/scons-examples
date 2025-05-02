@@ -30,7 +30,7 @@ jobs:
 
       - id: get-scons-msvc-cache
         name: Get SCons MSVC Cache
-        if: ${{ env.CACHE_KEY != '' }}
+        if: ${{ env.SCONS_CACHE_KEY != '' }}
         uses: actions/cache/restore@v4
         with:
           path: ~\scons_msvc_cache.json
