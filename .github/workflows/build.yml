@@ -28,22 +28,13 @@ jobs:
         shell: bash
         run: echo "SCONS_CACHE_KEY=${RUNNER_OS}-${ImageVersion}" >> $GITHUB_ENV
 
-      - id: get-scons-msvc-cache
-        name: Get SCons MSVC Cache
+      - name: SCons MSVC Cache
         if: ${{ env.SCONS_CACHE_KEY != '' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
           path: ~\scons_msvc_cache.json
           key: ${{ env.SCONS_CACHE_KEY }}
-          fail-on-cache-miss: false
 
       - name: Build project
         working-directory: ${{ matrix.project }}
         run: scons
-
-      - name: Save SCons MSVC Cache
-        if: ${{ steps.get-scons-msvc-cache.outputs.cache-hit != 'true'  }}
-        uses: actions/cache/save@v4
-        with:
-          path: ~\scons_msvc_cache.json
-          key: ${{ env.SCONS_CACHE_KEY }}
