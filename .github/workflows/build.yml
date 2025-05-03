@@ -1,0 +1,40 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  VSCMD_SKIP_SENDTELEMETRY: 1
+  SCONS_CACHE_MSVC_CONFIG: 1
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        project: [cfile-to-asm-builder, shared-lib-program, simple, simple-configure]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        run: pip install scons
+
+      - name: set cache key for SCons MSVC Cache
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: bash
+        run: echo "SCONS_CACHE_KEY=${RUNNER_OS}-${ImageVersion}" >> $GITHUB_ENV
+
+      - name: SCons MSVC Cache
+        if: ${{ env.SCONS_CACHE_KEY != '' }}
+        uses: actions/cache@v4
+        with:
+          path: ~\scons_msvc_cache.json
+          key: ${{ env.SCONS_CACHE_KEY }}
+
+      - name: Build project
+        working-directory: ${{ matrix.project }}
+        run: scons
